@@ -28,16 +28,23 @@ logpw.send_keys('pkh19255102!')
 logpw.send_keys(Keys.RETURN)
 sleep(1)
 
-#100개씩 출력하도록 선택
-box=driver.find_element_by_css_selector('#content > div.btn-area > span:nth-child(2)')
+
+#분 단위 선택
+box=driver.find_element_by_css_selector('#dataFormCd')
 box.click()
 ActionChains(driver).send_keys(Keys.END).send_keys(Keys.RETURN).perform()
 sleep(1)
 
+#100개씩 출력하도록 선택
+#box=driver.find_element_by_css_selector('#content > div.btn-area > span:nth-child(2)')
+#box.click()
+#ActionChains(driver).send_keys(Keys.END).send_keys(Keys.RETURN).perform()
+#sleep(1)
+
 #검색 클릭 btn-area text-center
-search=driver.find_element_by_css_selector('#schForm > div.btn-area.text-center > a:nth-child(1)')
-search.click()
-sleep(1)
+#search=driver.find_element_by_css_selector('#schForm > div.btn-area.text-center > a:nth-child(1)')
+#search.click()
+#sleep(1)
 
 #에러가 생긴 경우 다음 10페이지 부터 받기 위해 10페이지씩 이동
 for j in range(0,1):
