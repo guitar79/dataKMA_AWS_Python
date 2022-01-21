@@ -35,9 +35,9 @@ driver.get('https://data.kma.go.kr/data/grnd/selectAwsRltmList.do?pgmNo=56&tabNo
 select_time = Select(driver.find_element_by_css_selector('#dataFormCd'))
 
 # select by visible text
-#select_time.select_by_visible_text('분 자료')
+select_time.select_by_visible_text('분 자료')
 #select_time.select_by_visible_text('시간 자료')
-select_time.select_by_visible_text('일 자료')
+#select_time.select_by_visible_text('일 자료')
 #select_time.click()
 sleep(1)
 
@@ -49,8 +49,7 @@ search_bt = driver.find_element_by_css_selector('#dsForm > div.wrap_btn > button
 search_bt.click()
 sleep(1)
 
-
-#에러가 생긴 경우 다음 10페이지 부터 받기 위해 10페이지 이동
+#에러가 생긴 경우 다음 10페이지 부터 받기 위해 10페이지 이동 
 start_page = 0
 for j in range(0, start_page+1):
     if j > 0 :
