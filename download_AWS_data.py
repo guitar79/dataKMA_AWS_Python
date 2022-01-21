@@ -6,14 +6,15 @@ Spyder Editor
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support.ui import Select
 from time import sleep
 
 #크롬 브라우져 열기
+#driver = webdriver.Chrome()
 driver = webdriver.Chrome(executable_path='./chromedriver_linux64')
-#driver=webdriver.Chrome()
 
 #페이지 URL
-driver.get('https://data.kma.go.kr/data/grnd/selectAsosList.do?pgmNo=35')
+driver.get('https://data.kma.go.kr/data/grnd/selectAsosList.do?pgmNo=34')
 
 #log=driver.find_element_by_id('loginBtn')
 #로그인
@@ -28,138 +29,67 @@ logpw.send_keys('pkh19255102!')
 logpw.send_keys(Keys.RETURN)
 sleep(1)
 
+#전체선택 클릭
+driver.get('https://data.kma.go.kr/data/grnd/selectAwsRltmList.do?pgmNo=56&tabNo=1')
 
-#분 단위 선택
-box=driver.find_element_by_css_selector('#dataFormCd')
-box.click()
-ActionChains(driver).send_keys(Keys.END).send_keys(Keys.RETURN).perform()
+select_time = Select(driver.find_element_by_css_selector('#dataFormCd'))
+
+# select by visible text
+#select_time.select_by_visible_text('분 자료')
+#select_time.select_by_visible_text('시간 자료')
+select_time.select_by_visible_text('일 자료')
+#select_time.click()
 sleep(1)
 
-#100개씩 출력하도록 선택
-#box=driver.find_element_by_css_selector('#content > div.btn-area > span:nth-child(2)')
-#box.click()
-#ActionChains(driver).send_keys(Keys.END).send_keys(Keys.RETURN).perform()
-#sleep(1)
+search_area = driver.find_element_by_css_selector('#ztree_1_check')
+search_area.click()
+sleep(1)
 
-#검색 클릭 btn-area text-center
-#search=driver.find_element_by_css_selector('#schForm > div.btn-area.text-center > a:nth-child(1)')
-#search.click()
-#sleep(1)
+search_bt = driver.find_element_by_css_selector('#dsForm > div.wrap_btn > button')
+search_bt.click()
+sleep(1)
 
-#에러가 생긴 경우 다음 10페이지 부터 받기 위해 10페이지씩 이동
-for j in range(0,1):
+
+#에러가 생긴 경우 다음 10페이지 부터 받기 위해 10페이지 이동
+start_page = 0
+for j in range(0, start_page+1):
     if j > 0 :
-        next_ten_page=driver.find_element_by_css_selector('#content > div.boardWrap > div > div.pagination.pagination-small > ul > li:nth-child(13) > a')
+        next_ten_page = driver.find_element_by_css_selector('#wrap_content > div.wrap_itm.area_data > div.cont_itm > div.ft_lst > div.wrap_paging > ul > li.next > a')
         next_ten_page.click()
-        sleep(1)
+        sleep(1)     
     start = j
-    print ('%s*10 - page passed ++++++++++\n' % (start))
+    print ('starting download %s*10 - pages ++++++++++\n' % (start))
 
-for ii in range(start,131):
-    for i in range(1,11):
-        #다음 페이지로 이동
-        next_page=driver.find_element_by_css_selector('#content > div.boardWrap > div > div.pagination.pagination-small > ul > li:nth-child(%s) > a' %(i+2))
-        next_page.click()
+for ii in range(start, 5000):
+    for i in range(1, 11):
+        if i > 1 :
+            # 페이지로 이동
+            next_page=driver.find_element_by_css_selector('#wrap_content > div.wrap_itm.area_data > div.cont_itm > div.ft_lst > div.wrap_paging > ul > li:nth-child({}) > a'.format(str(i+2)))
+            next_page.click()
+            sleep(1)
+        
+        #모두 선택
+        check_all = driver.find_element_by_css_selector('#checkAll')
+        check_all.click()
         sleep(1)
         
-        check=driver.find_element_by_id('checkAll')
-        check.click()
+        #다운로드
+        dn_checked = driver.find_element_by_css_selector('#wrap_content > div.wrap_itm.area_data > div.cont_itm > div.ft_lst > div.right > a')
+        dn_checked.click()
         sleep(1)
+
+        dn_clk1 = driver.find_element_by_css_selector('#requestForm > ul > li:nth-child(15) > label')
         
-        #다운로드 클릭
-        down=driver.find_element_by_css_selector('#schForm > div.btn-area.text-center > a:nth-child(2)')
-        down.click()
+        dn_clk1.click()
         sleep(1)
-            
-        btn=driver.find_element_by_css_selector('#reqstPurposeCd7')
-        btn.click()
-        sleep(1)
-        
-        conf=driver.find_element_by_css_selector('#btnArea > input.btn.btn-primary')
-        conf.click()
+
+        dn_clk2 = driver.find_element_by_css_selector('#wrap-datapop > div > div.cont_layer.box > div > a.btn_request')
+        dn_clk2.click()
         sleep(10)
+        
         print ('%s - %s page done ++++++++++\n' % (ii, i))
         
-    next_ten_page=driver.find_element_by_css_selector('#content > div.boardWrap > div > div.pagination.pagination-small > ul > li:nth-child(13) > a')
+    next_ten_page = driver.find_element_by_css_selector('#wrap_content > div.wrap_itm.area_data > div.cont_itm > div.ft_lst > div.wrap_paging > ul > li.next > a')
     next_ten_page.click()
-    sleep(1)
-        
-    
-    '''
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-from time import sleep
-
-driver = webdriver.Chrome(executable_path='./chromedriver_linux64')
-
-
-
-admin_email = "guitar79@gs.hs.kr"  # 관리자계정입력
-admin_passwd = "PASS" # 관리자계정 비번입력
-admin_passwd = "Pkh19255102@" # 관리자계정 비번입력
-
-def login_mathwork_admin(admin_email, admin_passwd): 
-    driver.get('https://kr.mathworks.com/login?uri=%2Fmwaccount%2F')
-    driver.implicitly_wait(3)
-    print("debug-driver.implicitly_wait(3)")
-    
-    frame = driver.find_element_by_id('me')
-    driver.switch_to.frame(frame)
-    print("debug-driver.switch_to.frame(frame)")
-    sleep(1)
-    
-    driver.find_element_by_id('userId').send_keys(admin_email)
-    driver.find_element_by_id('userId').send_keys(Keys.RETURN)
-    print("debug-driver.find_element_by_id('userId').send_keys(Keys.RETURN)")
-    sleep(1)
-    
-    driver.find_element_by_id('password').send_keys(admin_passwd)
-    driver.find_element_by_id('password').send_keys(Keys.RETURN)
-    print("debug-driver.find_element_by_id('password').send_keys(Keys.RETURN)")
-    sleep(1)
-    return 0
-
-def add_user(first_n, last_n, user_account): 
-    license_no = "40449242"
-    driver.get('https://kr.mathworks.com/licensecenter/users')
-    sleep(1)
-    driver.find_element_by_partial_link_text("사용자 추가").click()
-    sleep(1)
-    
-    license_id = driver.find_element_by_id('lid')
-    license_id.send_keys(license_no)
-    license_id.send_keys(Keys.RETURN)
-    sleep(1)
-    
-    driver.find_element_by_id('forms_add_user_first_name').send_keys(first_n)
-    driver.find_element_by_id('forms_add_user_last_name').send_keys(last_n)
-    
-    driver.find_element_by_id('forms_add_user_latin_family_name').send_keys("GSHS")
-    driver.find_element_by_id('forms_add_user_latin_given_name').send_keys("Teacher")
-    
-    user_email = driver.find_element_by_id('forms_add_user_email_address')
-    user_email.send_keys(user_account)
-    user_email.send_keys(Keys.RETURN)
-    #sleep(1)
-    driver.implicitly_wait(1)
-    
-    driver.find_element_by_partial_link_text("사용자 추가").click()
-    sleep(1)
-    return 0
-
-f = open("add_user_list_teacher.txt", 'r')
-lines = f.readlines()
-
-login_mathwork_admin(admin_email, admin_passwd)
-for user_id in lines:
-    try : 
-        user_id = user_id.replace(" ","")
-        user_id = user_id.replace("\n","")
-        user_id = user_id.replace("\t","")
-        user_id = user_id.split(",")
-        print(user_id)
-        add_user(user_id[0], user_id[1], user_id[2])
-    except :
-        continue
-    '''
+    sleep(1)   
     
