@@ -31,7 +31,7 @@ select_time = Select(driver.find_element_by_css_selector('#dataFormCd'))
 
 # select by visible text
 #select_time.select_by_visible_text('분 자료')
-#select_time.select_by_visible_text('시간 자료')
+#select_time.select_by_visible_text('시자료')
 select_time.select_by_visible_text('일 자료')
 #select_time.click()
 sleep(1)
