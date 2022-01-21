@@ -1,4 +1,4 @@
-# dataKMA_AWS_Python
+# dataKMA_Python
 
 가상환경 리스트 보기
 > conda env list
