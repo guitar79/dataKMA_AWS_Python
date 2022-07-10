@@ -5,13 +5,15 @@
 
 #windows
 ##가상환경 생성하기 (windows)
-conda create -n dataKMA_Python_wiu_env
+conda create -n dataKMA_Python_win_env
 
 ##가상환경 시작하기 (windows)
 conda activate dataKMA_Python_win_env
 
 ##install module
 conda install selenium spyder
+conda install numpy matplotlib
+conda install -c conda-forge pint-pandas
 
 ##가상환경 내보내기 (windows)
 conda env export > dataKMA_Python_win_env.yaml
